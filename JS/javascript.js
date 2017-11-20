@@ -1,87 +1,115 @@
 /* Generamos los elementos del html en una funcion */
+var menu;
 var titulo;
 var cajaColores;
-var divTxt,divIconos,divMostrar;
-var btnColor1,btnColor2,btnColor3,btnColor4;
+var divTxt, divIconos, divMostrar;
+var btnColor1, btnColor2, btnColor3, btnColor4;
 var txtPlato;
-var boton1,boton2,boton3,boton4,boton5,boton6;
+var boton1, boton2, boton3, boton4, boton5, boton6, boton7;
 
+inicio();
 
-function inicio(){
-    
-}
-
-function inicializarElementos(){
-    titulo = document.createElement("h1").appendChild(document.createTextNode("Nuestro menú"));
-    
-    iniciarBotonesColores();
-    
-    
-    txtPlato = document.createElement("input");
-    txtPlato.setAttribute("id","platos");
-    txtPlato.setAttribute("type","text");
-    
-}
-
-function iniciarBotonesColores(){
-    btnColor1 = document.createElement("button");   
-    btnColor1.setAttribute("class","button1");
-    
-    btnColor2 = document.createElement("button");
-    btnColor2.setAttribute("class","button2");
-    
-    btnColor3 = createElement("button");
-    btnColor3.setAttribute("class","button3");
-    
-    btnColor4 = createElement("button");
-    btnColor4.setAttribute("class","button4");
-    
-    cajaColores = document.createElement("div");
-    cajaColores.setAttribute("id","cajaColores");
-    llenarCajaColores();
-}
-
-function iniciarBotonesGestion(){
-    
-    boton1 = document.createElement('span');
-    boton1.className ="glyphicon glyphicon-plus";
-    boton2 = document.createElement('span');
-    boton2.className ="glyphicon glyphicon-remove";
-    boton3 = document.createElement('span');
-    boton3.className ="glyphicon glyphicon-text-strike";
-}
-
-function cargarElementos(){
+function inicio() {
     inicializarElementos();
-    cargarCajas();
-    document.getElementById('resultados').appendChild(titulo);
-    document.getElementById('resultados').appendChild(cajaColores);
-    document.getElementById('resultados').appendChild(divIconos);
-    document.getElementById('resultados').appendChild(divMostrar);
-    document.getElementById('mostrar').appendChild(txtPlato);
-    
+}
+
+/* Metemos todos los elementos en el html */
+function inicializarElementos() {
+    /* Titulos */
+    titulo = document.createElement("h1");
+    var txtTitulo = document.createTextNode("Nuestro menú");
+    titulo.appendChild(txtTitulo);
+    document.getElementById('titulo').appendChild(titulo);
+    /*Fin  titulos */
+
+    /* Colores */
+    btnColor1 = document.createElement("button");
+    btnColor1.setAttribute("class", "button");
+    btnColor2 = document.createElement("button");
+    btnColor2.setAttribute("class", "button2");
+    btnColor3 = document.createElement("button");
+    btnColor3.setAttribute("class", "button3");
+    btnColor4 = document.createElement("button");
+    btnColor4.setAttribute("class", "button4");
+
+    document.getElementById('cajaColores').appendChild(btnColor1);
+    document.getElementById('cajaColores').appendChild(btnColor2);
+    document.getElementById('cajaColores').appendChild(btnColor3);
+    document.getElementById('cajaColores').appendChild(btnColor4);
+    /* Fin colores */
+
+    /* Input platos */
+    txtPlato = document.createElement("input");
+    txtPlato.setAttribute("id", "platos");
+    txtPlato.setAttribute("type", "text");
+    txtPlato.required = true;
+    txtPlato.setAttribute("size", "100");
+
+    document.getElementById('textoIntroducir').appendChild(txtPlato);
+    /* Fin platos */
+
+    /* Iconos */
+    boton1 = document.createElement('span');
+    boton1.className = "glyphicon glyphicon-plus";
+    boton1.id = "botonAdd";
+    boton1.setAttribute("style", "cursor:pointer");
+    boton2 = document.createElement('span');
+    boton2.className = "glyphicon glyphicon-remove";
+    boton2.setAttribute("style", "cursor:pointer");
+    boton2.id = "botonRemove";
+    boton3 = document.createElement('span');
+    boton3.className = "glyphicon glyphicon-text-width";
+    boton3.setAttribute("style", "cursor:pointer");
+    boton3.id = "botonTachar";
+    boton4 = document.createElement('span');
+    boton4.className = "glyphicon glyphicon-check";
+    boton4.setAttribute("style", "cursor:pointer");
+    boton4.id = "botonSeleccionar";
+    boton5 = document.createElement('span');
+    boton5.className = "glyphicon glyphicon-unchecked";
+    boton5.setAttribute("style", "cursor:pointer");
+    boton5.id = "botonDeseleccionar";
+    boton6 = document.createElement('span');
+    boton6.className = "glyphicon glyphicon-ok";
+    boton6.setAttribute("style", "cursor:pointer");
+    boton6.id = "botonSeleccionarTodo";
+    boton7 = document.createElement('span');
+    boton7.className = "glyphicon glyphicon-resize-vertical";
+    boton7.setAttribute("style", "cursor:pointer");
+    boton7.id = "botonOrganizar";
+
+    document.getElementById('iconos').appendChild(boton1);
+    document.getElementById('iconos').appendChild(boton2);
+    document.getElementById('iconos').appendChild(boton3);
+    document.getElementById('iconos').appendChild(boton4);
+    document.getElementById('iconos').appendChild(boton5);
+    document.getElementById('iconos').appendChild(boton6);
+    document.getElementById('iconos').appendChild(boton7);
+    /* Fin iconos */
+
+
+    asignarEventos();
+
+}
+
+//Eventos de todos los elementos
+function asignarEventos() {
+    txtPlato.addEventListener("keydown", function (e) {
+        var key = e.keyCode;
+        if (key === 13) {
+            comprobarTexto(e);
+        }
+    });
 }
 
 
-function cargarCajas(){
-    divTxt = document.createElement("div");
-    divTxt.setAttribute("id","textoIntroducir");
-    divIconos = document.createElement("div");
-    divIconos.setAttribute("id","iconos");
-    divMostrar = document.createElement("div");
-    divMostrar.setAttribute("id","mostrar");
-    
-    document.getElementById('resultados').appendChild(cajaColores);
-    document.getElementById('resultados').appendChild(divTxt);
-    document.getElementById('resultados').appendChild(divIconos);
-    document.getElementById('resultados').appendChild(divMostrar);
-    
-    
+function comprobarTexto(e){
+    alert(e.target.value);
 }
 
-function llenarCajaColores(){
-    cajaColores.appendChild(btnColor1);
-    cajaColores.appendChild(btnColor2);
-    cajaColores.appendChild(btnColor3);
-    cajaColores.appendChild(btnColor4);
-}
+
+// Crear listado
+
+
+
+
