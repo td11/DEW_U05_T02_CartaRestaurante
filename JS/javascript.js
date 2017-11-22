@@ -6,6 +6,7 @@ var divTxt, divIconos, divMostrar;
 var btnColor1, btnColor2, btnColor3, btnColor4;
 var txtPlato;
 var boton1, boton2, boton3, boton4, boton5, boton6, boton7;
+var colorElegido;
 
 inicio();
 
@@ -97,19 +98,66 @@ function asignarEventos() {
     txtPlato.addEventListener("keydown", function (e) {
         var key = e.keyCode;
         if (key === 13) {
-            comprobarTexto(e);
+            if (/^\s+|\s+$/.test(e.target.value) || e.target.value == "") {
+                alert("Introduzca un plato.");
+            } else {
+                addPlato(e);
+            }
         }
     });
+
+    /* Colores */
+    btnColor1.addEventListener('click', function (e) {
+        colorElegido = window.getComputedStyle(e.target, null).getPropertyValue('background-color');
+    });
+
+    btnColor2.addEventListener('click', function (e) {
+        colorElegido = window.getComputedStyle(e.target, null).getPropertyValue('background-color');
+    });
+
+    btnColor3.addEventListener('click', function (e) {
+        colorElegido = window.getComputedStyle(e.target, null).getPropertyValue('background-color');
+    });
+
+    btnColor4.addEventListener('click', function (e) {
+        colorElegido = window.getComputedStyle(e.target, null).getPropertyValue('background-color');
+    });
+    
+    /* Gestion */
+
+
 }
 
 
-function comprobarTexto(e){
+
+function comprobarTexto(e) {
     alert(e.target.value);
 }
 
 
-// Crear listado
+// Añadir platos al listado
+function addPlato(e) {
+    var txtPlato = document.createTextNode(e.target.value);
+    var spanPlato = document.createElement('span');
+    spanPlato.appendChild(txtPlato);
+    var cajaPlato = document.createElement('div');
+    cajaPlato.id = 'plato' + contarPlatos();
+    cajaPlato.className = 'plato';
+    var checkBox = document.createElement('input');
+    checkBox.type = 'checkbox';
+    checkBox.name = 'plato';
+    checkBox.value = 'txtPlato';
+    cajaPlato.appendChild(checkBox);
+    cajaPlato.appendChild(spanPlato);
+    cajaPlato.style.backgroundColor = colorElegido;
+    document.getElementById('platos').value = "";
+    document.getElementById('lista').appendChild(cajaPlato);
 
+}
 
-
-
+//Contar numero de platos introducidos
+function contarPlatos() {
+    var lista = document.getElementById('lista');
+    var contadorPlatos = lista.getElementsByTagName('div').length;
+    return contadorPlatos;
+}
