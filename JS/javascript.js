@@ -6,7 +6,7 @@ var divTxt, divIconos, divMostrar;
 var btnColor1, btnColor2, btnColor3, btnColor4;
 var txtPlato;
 var boton1, boton2, boton3, boton4, boton5, boton6, boton7;
-var colorElegido;
+var colorElegido = '#4CAF50';
 
 inicio();
 
@@ -99,7 +99,7 @@ function asignarEventos() {
         var key = e.keyCode;
         if (key === 13) {
             if (/^\s+|\s+$/.test(e.target.value) || e.target.value == "") {
-                alert("Introduzca un plato.");
+                alert("Introduzca un plato que no este vacio.");
             } else {
                 addPlato(e);
             }
@@ -110,21 +110,95 @@ function asignarEventos() {
     btnColor1.addEventListener('click', function (e) {
         colorElegido = window.getComputedStyle(e.target, null).getPropertyValue('background-color');
     });
-
     btnColor2.addEventListener('click', function (e) {
         colorElegido = window.getComputedStyle(e.target, null).getPropertyValue('background-color');
     });
-
     btnColor3.addEventListener('click', function (e) {
         colorElegido = window.getComputedStyle(e.target, null).getPropertyValue('background-color');
     });
-
     btnColor4.addEventListener('click', function (e) {
         colorElegido = window.getComputedStyle(e.target, null).getPropertyValue('background-color');
     });
-    
-    /* Gestion */
 
+    /* Botones Iconos */
+    /* Añadir */
+    boton1.addEventListener('click', function () {
+            if (/^\s+|\s+$/.test(txtPlato.value) || txtPlato.value == "") {
+                alert("Introduzca un plato que no este vacio.");
+            } else {
+                addPlatoButton(txtPlato);
+            }
+        }
+
+    );
+    /* Eliminar */
+    boton2.addEventListener('click', function () {
+        var numeroPlatos = contarPlatos();
+        for (var i = 0; i < numeroPlatos; i++) {
+            var divPlato = document.getElementById('plato' + i);
+            var checkBox = document.getElementById('checkbox' + i);
+            if (checkBox.checked == true) {
+                divPlato.parentElement.removeChild(divPlato);
+            }
+        }
+        recontarPlatos();
+    });
+
+    /* Subrayar el texto */
+    boton3.addEventListener('click', function () {
+        var numeroPlatos = contarPlatos();
+        for (var i = 0; i < numeroPlatos; i++) {
+            var divPlato = document.getElementById('plato' + i);
+            var checkBox = document.getElementById('checkbox' + i);
+            if (checkBox.checked == true) {
+                var txt = divPlato.getElementsByTagName("span")[0];
+                txt.innerHTML = txt.innerText.strike();
+            }
+        }
+    });
+
+    /* Seleccionar todos los checkbox */
+    boton4.addEventListener('click', function () {
+        var numeroPlatos = contarPlatos();
+        for (var i = 0; i < numeroPlatos; i++) {
+            var divPlato = document.getElementById('plato' + i);
+            var checkBox = document.getElementById('checkbox' + i);
+            if (checkBox.checked == false) {
+                checkBox.checked = true;
+            }
+        }
+    });
+
+    /* Deseleccionar todos los checkbox */
+    boton5.addEventListener('click', function () {
+        var numeroPlatos = contarPlatos();
+        for (var i = 0; i < numeroPlatos; i++) {
+            var divPlato = document.getElementById('plato' + i);
+            var checkBox = document.getElementById('checkbox' + i);
+            if (checkBox.checked == true) {
+                checkBox.checked = false;
+            }
+        }
+    });
+
+    /* Cambiar seleccion de checkbox */
+    boton6.addEventListener('click', function () {
+        var numeroPlatos = contarPlatos();
+        for (var i = 0; i < numeroPlatos; i++) {
+            var divPlato = document.getElementById('plato' + i);
+            var checkBox = document.getElementById('checkbox' + i);
+            if (checkBox.checked == true) {
+                checkBox.checked = false;
+            } else if (checkBox.checked == false) {
+                checkBox.checked = true;
+            }
+        }
+    });
+    
+    /* Reordenar por letra y color */
+    boton7.addEventListener('click', function(){
+        var arrayPlatos;
+    });
 
 }
 
@@ -134,17 +208,83 @@ function comprobarTexto(e) {
     alert(e.target.value);
 }
 
+//Actualizar numero de platos
+function recontarPlatos() {
+    var conteo = contarPlatos();
+    for (var i = 0; i < conteo; i++) {
+        var lista = document.getElementsByClassName('plato');
+        var cajaPlato = lista.item(i);
+        cajaPlato.id = 'plato' + i;
+        var checkbox = cajaPlato.getElementsByTagName('input').item(0);
+        checkbox.id = 'checkbox' + i;
+    }
+}
 
-// Añadir platos al listado
+//Cambia nombre de los platos
+function cambiarPlato(id) {
+    var caja = document.getElementById(id);
+    var texto = prompt("Introduzca un nuevo nombre:");
+    if (texto != null) {
+        caja.getElementsByTagName('span').item(0).innerHTML = texto;
+    } else {
+        alert('Nombre de plato a cambiar no válido.');
+    }
+}
+
+
+// Añadir platos al listado evento teclado
 function addPlato(e) {
     var txtPlato = document.createTextNode(e.target.value);
     var spanPlato = document.createElement('span');
+    var idparaspan = 'plato' + contarPlatos();
     spanPlato.appendChild(txtPlato);
+    spanPlato.addEventListener('click', function () {
+        var caja = document.getElementById(idparaspan);
+        var texto = prompt("Introduzca un nuevo nombre:");
+        if (texto != null) {
+            caja.getElementsByTagName('span').item(0).innerHTML = texto;
+        } else {
+            alert('Nombre de plato a cambiar no válido.');
+        }
+    });
     var cajaPlato = document.createElement('div');
     cajaPlato.id = 'plato' + contarPlatos();
     cajaPlato.className = 'plato';
+    cajaPlato.contenteditable = "true";
     var checkBox = document.createElement('input');
     checkBox.type = 'checkbox';
+    checkBox.id = 'checkbox' + contarPlatos();
+    checkBox.name = 'plato';
+    cajaPlato.appendChild(checkBox);
+    cajaPlato.appendChild(spanPlato);
+    cajaPlato.style.backgroundColor = colorElegido;
+    document.getElementById('platos').value = "";
+    document.getElementById('lista').appendChild(cajaPlato);
+
+}
+
+//Añadir platos al listado evento plus
+function addPlatoButton(e) {
+    var txtPlato = document.createTextNode(e.value);
+    var spanPlato = document.createElement('span');
+    var idparaspan = 'plato' + contarPlatos();
+    spanPlato.appendChild(txtPlato);
+    spanPlato.addEventListener('click', function () {
+        var caja = document.getElementById(idparaspan);
+        var texto = prompt("Introduzca un nuevo nombre:");
+        if (texto != null) {
+            caja.getElementsByTagName('span').item(0).innerHTML = texto;
+        } else {
+            alert('Nombre de plato a cambiar no válido.');
+        }
+    });
+    var cajaPlato = document.createElement('div');
+    cajaPlato.id = 'plato' + contarPlatos();
+    cajaPlato.className = 'plato';
+    cajaPlato.contenteditable = "true";
+    var checkBox = document.createElement('input');
+    checkBox.type = 'checkbox';
+    checkBox.id = 'checkbox' + contarPlatos();
     checkBox.name = 'plato';
     checkBox.value = 'txtPlato';
     cajaPlato.appendChild(checkBox);
